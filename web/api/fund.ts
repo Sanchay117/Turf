@@ -6,18 +6,27 @@
 // first tries to send the top-up itself, and if any RPC call fails it signs the
 // transfer against a blockhash the visitor's browser supplied and hands it back
 // for the browser to submit. The treasury key never leaves the server either way.
-import { Connection, Keypair, LAMPORTS_PER_SOL, PublicKey, SystemProgram, Transaction } from "@solana/web3.js";
+import type { Keypair, PublicKey } from "@solana/web3.js";
+
+// web3.js loads inside the handler, so a failure to load it comes back as a
+// readable error instead of a crashed function.
+type Web3 = typeof import("@solana/web3.js");
+let web3: Web3 | null = null;
+async function lib(): Promise<Web3> {
+  return (web3 ??= await import("@solana/web3.js"));
+}
 
 const RPC = process.env.RPC_URL || process.env.VITE_RPC_URL || "https://api.devnet.solana.com";
-const FIRST = Math.round(0.03 * LAMPORTS_PER_SOL); // the visitor (also pays arena rent if needed)
-const REST = Math.round(0.012 * LAMPORTS_PER_SOL); // each rival bot
-const LOW = Math.round(0.004 * LAMPORTS_PER_SOL);
+const SOL = 1_000_000_000;
+const FIRST = Math.round(0.03 * SOL); // the visitor (also pays arena rent if needed)
+const REST = Math.round(0.012 * SOL); // each rival bot
+const LOW = Math.round(0.004 * SOL);
 const WINDOW_MS = 10 * 60 * 1000;
 const MAX_HITS = 6;
 
 const hits = new Map<string, number[]>();
 
-function treasury(): Keypair | null {
+function treasury({ Keypair }: Web3): Keypair | null {
   const raw = process.env.TREASURY_SECRET;
   if (!raw) return null;
   try {
@@ -39,18 +48,35 @@ function message(e: unknown): string {
 }
 
 export async function GET(): Promise<Response> {
-  const t = treasury();
+  try {
+    return await balance(await lib());
+  } catch (e) {
+    return json({ ok: false, error: `gas station failed: ${message(e)}` }, 500);
+  }
+}
+
+export async function POST(request: Request): Promise<Response> {
+  try {
+    return await topUp(await lib(), request);
+  } catch (e) {
+    return json({ ok: false, error: `gas station failed: ${message(e)}` }, 500);
+  }
+}
+
+async function balance(w: Web3): Promise<Response> {
+  const t = treasury(w);
   if (!t) return json({ ok: false, error: "gas station not configured" }, 503);
   try {
-    const lamports = await new Connection(RPC, "confirmed").getBalance(t.publicKey);
-    return json({ ok: true, treasury: t.publicKey.toBase58(), sol: lamports / LAMPORTS_PER_SOL });
+    const lamports = await new w.Connection(RPC, "confirmed").getBalance(t.publicKey);
+    return json({ ok: true, treasury: t.publicKey.toBase58(), sol: lamports / SOL });
   } catch (e) {
     return json({ ok: false, treasury: t.publicKey.toBase58(), error: `rpc: ${message(e)}` }, 502);
   }
 }
 
-export async function POST(request: Request): Promise<Response> {
-  const t = treasury();
+async function topUp(w: Web3, request: Request): Promise<Response> {
+  const { Connection, PublicKey, SystemProgram, Transaction } = w;
+  const t = treasury(w);
   if (!t) return json({ ok: false, error: "gas station not configured" }, 503);
 
   const ip = (request.headers.get("x-forwarded-for") ?? "local").split(",")[0].trim();
