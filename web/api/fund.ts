@@ -2,19 +2,15 @@
 // game can sign every move locally, with no wallet popups and no faucet trip.
 // Runs as a Vercel function (Web-standard handlers) and inside the Vite dev server.
 //
-// Public devnet RPC sometimes refuses or rate-limits cloud servers. So the station
+// It has no dependencies: a System Program transfer is a small, fixed message, so
+// it is built and signed here with Node's own Ed25519 and sent over plain JSON-RPC.
+// (web3.js failed to load on Vercel's Node through an ESM-only transitive package.)
+//
+// Public devnet RPC can also refuse or rate-limit cloud servers. So the station
 // first tries to send the top-up itself, and if any RPC call fails it signs the
 // transfer against a blockhash the visitor's browser supplied and hands it back
 // for the browser to submit. The treasury key never leaves the server either way.
-import type { Keypair, PublicKey } from "@solana/web3.js";
-
-// web3.js loads inside the handler, so a failure to load it comes back as a
-// readable error instead of a crashed function.
-type Web3 = typeof import("@solana/web3.js");
-let web3: Web3 | null = null;
-async function lib(): Promise<Web3> {
-  return (web3 ??= await import("@solana/web3.js"));
-}
+import { createPrivateKey, createPublicKey, sign, type KeyObject } from "node:crypto";
 
 const RPC = process.env.RPC_URL || process.env.VITE_RPC_URL || "https://api.devnet.solana.com";
 const SOL = 1_000_000_000;
@@ -23,18 +19,147 @@ const REST = Math.round(0.012 * SOL); // each rival bot
 const LOW = Math.round(0.004 * SOL);
 const WINDOW_MS = 10 * 60 * 1000;
 const MAX_HITS = 6;
+const SYSTEM_PROGRAM = new Uint8Array(32);
 
 const hits = new Map<string, number[]>();
 
-function treasury({ Keypair }: Web3): Keypair | null {
+// ---------------------------------------------------------------- base58
+
+const ALPHABET = "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz";
+
+function b58encode(bytes: Uint8Array): string {
+  let n = 0n;
+  for (const b of bytes) n = n * 256n + BigInt(b);
+  let out = "";
+  while (n > 0n) {
+    out = ALPHABET[Number(n % 58n)] + out;
+    n /= 58n;
+  }
+  for (const b of bytes) {
+    if (b !== 0) break;
+    out = "1" + out;
+  }
+  return out;
+}
+
+/** Decodes a base58 string to exactly `size` bytes, or throws. */
+function b58decode(s: string, size = 32): Uint8Array {
+  let n = 0n;
+  for (const c of s) {
+    const v = ALPHABET.indexOf(c);
+    if (v < 0) throw new Error("not base58");
+    n = n * 58n + BigInt(v);
+  }
+  const body: number[] = [];
+  while (n > 0n) {
+    body.unshift(Number(n % 256n));
+    n /= 256n;
+  }
+  let zeros = 0;
+  while (s[zeros] === "1") zeros++;
+  const out = [...new Array(zeros).fill(0), ...body];
+  if (out.length !== size) throw new Error(`expected ${size} bytes`);
+  return Uint8Array.from(out);
+}
+
+// ---------------------------------------------------------------- keys and transactions
+
+interface Treasury {
+  key: KeyObject;
+  pub: Uint8Array;
+  address: string;
+}
+
+function treasury(): Treasury | null {
   const raw = process.env.TREASURY_SECRET;
   if (!raw) return null;
   try {
-    return Keypair.fromSecretKey(Uint8Array.from(JSON.parse(raw)));
+    const secret = Uint8Array.from(JSON.parse(raw) as number[]);
+    if (secret.length !== 64) return null;
+    // PKCS#8 wrapper for a raw Ed25519 seed (the first 32 bytes of a Solana secret key).
+    const der = Buffer.concat([Buffer.from("302e020100300506032b657004220420", "hex"), Buffer.from(secret.subarray(0, 32))]);
+    const key = createPrivateKey({ key: der, format: "der", type: "pkcs8" });
+    const spki = createPublicKey(key).export({ format: "der", type: "spki" });
+    const pub = new Uint8Array(spki.subarray(spki.length - 32));
+    if (Buffer.compare(Buffer.from(pub), Buffer.from(secret.subarray(32))) !== 0) return null;
+    return { key, pub, address: b58encode(pub) };
   } catch {
     return null;
   }
 }
+
+function shortvec(n: number): number[] {
+  const out: number[] = [];
+  for (;;) {
+    let b = n & 0x7f;
+    n >>= 7;
+    if (n) b |= 0x80;
+    out.push(b);
+    if (!n) return out;
+  }
+}
+
+function u32(n: number): number[] {
+  const b = Buffer.alloc(4);
+  b.writeUInt32LE(n);
+  return [...b];
+}
+
+function u64(n: number): number[] {
+  const b = Buffer.alloc(8);
+  b.writeBigUInt64LE(BigInt(n));
+  return [...b];
+}
+
+/** A signed legacy transaction of System Program transfers from the treasury, as base64. */
+function transfers(t: Treasury, to: { key: Uint8Array; lamports: number }[], blockhash: Uint8Array): string {
+  // Accounts: treasury (signer, writable), each recipient (writable), System Program (read-only).
+  const accounts = [t.pub, ...to.map((x) => x.key), SYSTEM_PROGRAM];
+  const program = accounts.length - 1;
+  const message = [
+    1, 0, 1,
+    ...shortvec(accounts.length),
+    ...accounts.flatMap((a) => [...a]),
+    ...blockhash,
+    ...shortvec(to.length),
+    ...to.flatMap((x, i) => {
+      const data = [...u32(2), ...u64(x.lamports)]; // SystemInstruction::Transfer
+      return [program, ...shortvec(2), 0, i + 1, ...shortvec(data.length), ...data];
+    }),
+  ];
+  const msg = Uint8Array.from(message);
+  const signature = sign(null, msg, t.key);
+  return Buffer.concat([Buffer.from(shortvec(1)), signature, msg]).toString("base64");
+}
+
+// ---------------------------------------------------------------- JSON-RPC
+
+async function rpc<T>(method: string, params: unknown[]): Promise<T> {
+  const res = await fetch(RPC, {
+    method: "POST",
+    headers: { "content-type": "application/json" },
+    body: JSON.stringify({ jsonrpc: "2.0", id: 1, method, params }),
+    signal: AbortSignal.timeout(8000),
+  });
+  if (!res.ok) throw new Error(`${method}: HTTP ${res.status}`);
+  const body = (await res.json()) as { result?: T; error?: { message?: string } };
+  if (body.error) throw new Error(`${method}: ${body.error.message ?? "error"}`);
+  return body.result as T;
+}
+
+async function confirm(signature: string, timeoutMs = 25_000): Promise<void> {
+  const t0 = Date.now();
+  while (Date.now() - t0 < timeoutMs) {
+    const r = await rpc<{ value: ({ err: unknown; confirmationStatus?: string } | null)[] }>("getSignatureStatuses", [[signature]]);
+    const s = r.value[0];
+    if (s?.err) throw new Error(`transfer failed on chain: ${JSON.stringify(s.err)}`);
+    if (s && (s.confirmationStatus === "confirmed" || s.confirmationStatus === "finalized")) return;
+    await new Promise((ok) => setTimeout(ok, 500));
+  }
+  throw new Error("not confirmed in time");
+}
+
+// ---------------------------------------------------------------- handlers
 
 function json(body: unknown, status = 200): Response {
   return new Response(JSON.stringify(body), {
@@ -48,35 +173,26 @@ function message(e: unknown): string {
 }
 
 export async function GET(): Promise<Response> {
+  const t = treasury();
+  if (!t) return json({ ok: false, error: "gas station not configured" }, 503);
   try {
-    return await balance(await lib());
+    const r = await rpc<{ value: number }>("getBalance", [t.address, { commitment: "confirmed" }]);
+    return json({ ok: true, treasury: t.address, sol: r.value / SOL });
   } catch (e) {
-    return json({ ok: false, error: `gas station failed: ${message(e)}` }, 500);
+    return json({ ok: false, treasury: t.address, error: `rpc: ${message(e)}` }, 502);
   }
 }
 
 export async function POST(request: Request): Promise<Response> {
   try {
-    return await topUp(await lib(), request);
+    return await topUp(request);
   } catch (e) {
     return json({ ok: false, error: `gas station failed: ${message(e)}` }, 500);
   }
 }
 
-async function balance(w: Web3): Promise<Response> {
-  const t = treasury(w);
-  if (!t) return json({ ok: false, error: "gas station not configured" }, 503);
-  try {
-    const lamports = await new w.Connection(RPC, "confirmed").getBalance(t.publicKey);
-    return json({ ok: true, treasury: t.publicKey.toBase58(), sol: lamports / SOL });
-  } catch (e) {
-    return json({ ok: false, treasury: t.publicKey.toBase58(), error: `rpc: ${message(e)}` }, 502);
-  }
-}
-
-async function topUp(w: Web3, request: Request): Promise<Response> {
-  const { Connection, PublicKey, SystemProgram, Transaction } = w;
-  const t = treasury(w);
+async function topUp(request: Request): Promise<Response> {
+  const t = treasury();
   if (!t) return json({ ok: false, error: "gas station not configured" }, 503);
 
   const ip = (request.headers.get("x-forwarded-for") ?? "local").split(",")[0].trim();
@@ -86,40 +202,39 @@ async function topUp(w: Web3, request: Request): Promise<Response> {
   recent.push(now);
   hits.set(ip, recent);
 
-  let keys: PublicKey[];
-  let relayHash: string | null = null;
+  let keys: string[];
+  let relayHash: Uint8Array | null = null;
   try {
     const body = (await request.json()) as { keys?: unknown; blockhash?: unknown };
     if (!Array.isArray(body.keys) || body.keys.length < 1 || body.keys.length > 4) throw new Error("bad keys");
-    keys = body.keys.map((k) => new PublicKey(String(k)));
-    if (typeof body.blockhash === "string") relayHash = new PublicKey(body.blockhash).toBase58();
+    keys = [...new Set(body.keys.map(String))];
+    for (const k of keys) {
+      const bytes = b58decode(k);
+      if (k === t.address || bytes.every((b) => b === 0)) throw new Error("bad key");
+    }
+    if (typeof body.blockhash === "string") relayHash = b58decode(body.blockhash);
   } catch {
     return json({ ok: false, error: "send { keys: [1 to 4 base58 public keys], blockhash? }" }, 400);
   }
 
-  const conn = new Connection(RPC, "confirmed");
   let sent = false;
   let rpcError = "";
   try {
-    const infos = await conn.getMultipleAccountsInfo(keys);
-    const tx = new Transaction();
-    const funded: string[] = [];
-    keys.forEach((k, i) => {
-      const have = infos[i]?.lamports ?? 0;
-      const want = i === 0 ? FIRST : REST;
-      if (have >= LOW) return;
-      tx.add(SystemProgram.transfer({ fromPubkey: t.publicKey, toPubkey: k, lamports: want - have }));
-      funded.push(k.toBase58());
-    });
-    if (funded.length === 0) return json({ ok: true, funded, note: "already funded" });
-    const { blockhash, lastValidBlockHeight } = await conn.getLatestBlockhash("confirmed");
-    tx.recentBlockhash = blockhash;
-    tx.feePayer = t.publicKey;
-    tx.sign(t);
-    const sig = await conn.sendRawTransaction(tx.serialize(), { maxRetries: 5 });
+    const infos = await rpc<{ value: ({ lamports: number } | null)[] }>("getMultipleAccounts", [
+      keys,
+      { commitment: "confirmed", encoding: "base64", dataSlice: { offset: 0, length: 0 } },
+    ]);
+    const to = keys
+      .map((k, i) => ({ k, have: infos.value[i]?.lamports ?? 0, want: i === 0 ? FIRST : REST }))
+      .filter((x) => x.have < LOW)
+      .map((x) => ({ address: x.k, key: b58decode(x.k), lamports: x.want - x.have }));
+    if (to.length === 0) return json({ ok: true, funded: [], note: "already funded" });
+    const latest = await rpc<{ value: { blockhash: string } }>("getLatestBlockhash", [{ commitment: "confirmed" }]);
+    const tx = transfers(t, to, b58decode(latest.value.blockhash));
+    const sig = await rpc<string>("sendTransaction", [tx, { encoding: "base64", preflightCommitment: "confirmed", maxRetries: 5 }]);
     sent = true;
-    await conn.confirmTransaction({ signature: sig, blockhash, lastValidBlockHeight }, "confirmed");
-    return json({ ok: true, funded, sig });
+    await confirm(sig);
+    return json({ ok: true, funded: to.map((x) => x.address), sig });
   } catch (e) {
     rpcError = message(e);
     // Once a top-up is on its way, never sign a second one for the same keys.
@@ -127,10 +242,6 @@ async function topUp(w: Web3, request: Request): Promise<Response> {
   }
 
   if (!relayHash) return json({ ok: false, error: `rpc: ${rpcError}` }, 502);
-  const tx = new Transaction();
-  keys.forEach((k, i) => tx.add(SystemProgram.transfer({ fromPubkey: t.publicKey, toPubkey: k, lamports: i === 0 ? FIRST : REST })));
-  tx.recentBlockhash = relayHash;
-  tx.feePayer = t.publicKey;
-  tx.sign(t);
-  return json({ ok: true, funded: keys.map((k) => k.toBase58()), relay: tx.serialize().toString("base64"), note: `server rpc failed: ${rpcError}` });
+  const to = keys.map((k, i) => ({ key: b58decode(k), lamports: i === 0 ? FIRST : REST }));
+  return json({ ok: true, funded: keys, relay: transfers(t, to, relayHash), note: `server rpc failed: ${rpcError}` });
 }
