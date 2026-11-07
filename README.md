@@ -4,8 +4,8 @@
 
 Land has been measured in chains since 1620, when Edmund Gunter made a surveyor's chain 66 feet long. Turf measures it in Solana slots. You click a hex, a chain of claims runs to it from your land, and the program records it in about a second for 0.000005 SOL. Your energy refills one point every slot (about every 240 ms on devnet as of November 2026; the page measures it live), so the pace of the game is the pace of the chain.
 
-- **Play:** _site link goes here after deploy_
-- **Video:** _link goes here_
+- **Play:** [turf-vert-two.vercel.app](https://turf-vert-two.vercel.app/)
+- **Video (1:51):** [youtu.be/oeBJimwTZtE](https://youtu.be/oeBJimwTZtE)
 - **Program (devnet):** [`Bep1f2hsBMdST6xbkfQqMAUkuQiSGrNFE4Sg9VZ4pvMi`](https://explorer.solana.com/address/Bep1f2hsBMdST6xbkfQqMAUkuQiSGrNFE4Sg9VZ4pvMi?cluster=devnet)
 
 No wallet is needed to play. The page makes a throwaway devnet key in your browser, a small gas station tops it up with a few cents of devnet SOL, and every move is signed locally. No popups, no faucet, no install.

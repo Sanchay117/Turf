@@ -606,13 +606,21 @@ async function fund(): Promise<void> {
     }));
     return;
   }
+  // The blockhash lets the land office sign a top-up for this tab to submit,
+  // in case its own connection to devnet is refused.
+  const latest = await chain.conn.getLatestBlockhash("confirmed");
   const res = await fetch("/api/fund", {
     method: "POST",
     headers: { "content-type": "application/json" },
-    body: JSON.stringify({ keys: [keys.me.publicKey.toBase58(), ...keys.rivals.map((k) => k.publicKey.toBase58())] }),
+    body: JSON.stringify({ keys: low.map((k) => k.toBase58()), blockhash: latest.blockhash }),
   });
-  const body = (await res.json().catch(() => ({}))) as { ok?: boolean; error?: string };
+  const body = (await res.json().catch(() => ({}))) as { ok?: boolean; error?: string; relay?: string };
   if (!res.ok || !body.ok) throw new Error(body.error || `land office returned ${res.status}`);
+  if (body.relay) {
+    const raw = Uint8Array.from(atob(body.relay), (c) => c.charCodeAt(0));
+    const signature = await chain.conn.sendRawTransaction(raw, { maxRetries: 5 });
+    await chain.conn.confirmTransaction({ signature, ...latest }, "confirmed");
+  }
 }
 
 async function stake(e: Event) {

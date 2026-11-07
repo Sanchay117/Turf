@@ -5,9 +5,9 @@
 **Tagline:** A real-time land war where every claim is a Solana transaction.
 
 **Links**
-- Play: _site link after deploy_
-- Demo video: _link after upload_
-- Code: _repo link after push_
+- Play: https://turf-vert-two.vercel.app/
+- Demo video: https://youtu.be/oeBJimwTZtE
+- Code: https://github.com/Sanchay117/Turf
 - Program (devnet): `Bep1f2hsBMdST6xbkfQqMAUkuQiSGrNFE4Sg9VZ4pvMi`
 
 ## What it does
@@ -32,6 +32,7 @@ In the round filmed for the demo, four players made 94 claims on devnet, confirm
 ## Challenges
 
 - Public devnet RPC rate limits. Every claim confirms over a websocket rather than by polling, retries on HTTP 429 are off, and each tab keeps to a send budget so the rivals never crowd out the human.
+- A gas station on a cloud server can't count on public devnet RPC, which rate-limits and sometimes refuses cloud addresses. So the station signs the top-up against a blockhash the visitor's browser supplies and lets the browser submit it, so it never depends on its own connection to devnet.
 - Devnet slots run near 240 ms right now, not the 400 ms often quoted, so the game measures slot time live for its countdown.
 - Fitting a whole game into one account: a fixed zero-copy layout, one byte per hex.
 
