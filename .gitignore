@@ -1,0 +1,16 @@
+target/
+node_modules/
+keys/
+.env
+.env.*
+.vercel/
+web/dist/
+film/out/
+film/public/capture/*.mp4
+film/public/capture/take*.json
+film/public/vo/*.wav
+film/public/sfx/
+*.log
+.DS_Store
+test-ledger/
+.anchor/

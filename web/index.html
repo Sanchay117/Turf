@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Turf · a land war on Solana</title>
+    <meta name="description" content="A real-time territory war where every claim is a Solana transaction. Land has been measured in chains since 1620; here it is measured in slots." />
+    <meta property="og:title" content="Turf · a land war on Solana" />
+    <meta property="og:description" content="Every claim is a Solana transaction, recorded in under a second. Stake yours." />
+    <meta property="og:image" content="/og.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="theme-color" content="#EFE6D0" />
+    <link rel="icon" href="/mark.svg" type="image/svg+xml" />
+  </head>
+  <body>
+    <header class="bar">
+      <a class="brand" href="/" aria-label="Turf home">
+        <svg class="mark" viewBox="0 0 40 40" aria-hidden="true"><use href="#mark" /></svg>
+        <span class="wordmark">Turf</span>
+      </a>
+      <p class="plate"><span id="plate">Plat No. ·</span><span class="sep">·</span><span id="round">Round ·</span></p>
+      <p class="readout"><span class="lbl">Slot</span><span id="slot" class="num">connecting</span></p>
+      <p class="readout"><span class="lbl">Round closes in</span><span id="left" class="num">·</span></p>
+      <p class="net" id="net" title="Everything here runs on Solana devnet"><i></i>Solana devnet</p>
+      <button class="notes-btn" id="notes-btn" type="button">Field notes</button>
+    </header>
+
+    <main class="desk">
+      <section class="sheet" id="sheet" aria-label="The plat: a 30 by 18 hex survey">
+        <canvas id="plat"></canvas>
+        <div id="tip" class="tip" role="status" aria-live="polite"></div>
+        <div id="banner" class="banner" hidden></div>
+
+        <div id="deed" class="deed">
+          <div class="deed-card">
+            <p class="kicker">Plat of the Turf Survey · Solana devnet</p>
+            <h1 class="title">Turf</h1>
+            <p class="lede">Land has been measured in chains since 1620. Here it is measured in Solana slots.</p>
+            <p class="body">
+              Click any hex and a chain of claims runs to it from your land. Every run is a real transaction,
+              recorded in about a second for 0.000005&nbsp;SOL. Energy refills one point every slot, several
+              times a second. Hold the most land when the round closes and your name goes in the register for good.
+            </p>
+            <form id="stake" class="stake" autocomplete="off">
+              <label class="name-field">
+                <span>Surveyor's name</span>
+                <input id="name" maxlength="15" spellcheck="false" />
+              </label>
+              <button type="submit" id="stake-btn" class="stake-btn">Stake your claim</button>
+            </form>
+            <p class="status" id="status" aria-live="polite"></p>
+            <dl class="live">
+              <div><dt>Slot</dt><dd id="d-slot" class="num">·</dd></div>
+              <div><dt>Claims on this plat</dt><dd id="d-moves" class="num">·</dd></div>
+              <div><dt>Surveyors on the map</dt><dd id="d-players" class="num">·</dd></div>
+            </dl>
+            <p class="foot">No wallet needed. This tab makes a throwaway devnet key and signs each claim itself.</p>
+          </div>
+        </div>
+      </section>
+
+      <aside class="ledger">
+        <section class="block">
+          <h2>Holdings</h2>
+          <ol id="holdings" class="holdings"></ol>
+        </section>
+        <section class="block register-block">
+          <h2>Register of Claims <span class="h2-note">this tab</span></h2>
+          <ol id="register" class="register"></ol>
+          <p class="sum" id="sum">Nothing recorded yet.</p>
+        </section>
+        <section class="block">
+          <h2>Champions</h2>
+          <ol id="hall" class="hall"></ol>
+        </section>
+      </aside>
+    </main>
+
+    <footer class="tray">
+      <div class="energy" aria-label="Energy">
+        <span class="lbl">Energy</span>
+        <div id="links" class="links" aria-hidden="true"></div>
+        <span id="energy-num" class="num energy-num">·</span>
+      </div>
+      <p class="hint" id="hint">Click any hex to run a chain of claims to it from your land. Each run is one transaction.</p>
+      <button class="invite" id="invite" type="button">Invite a rival</button>
+    </footer>
+
+    <dialog id="notes" class="notes">
+      <form method="dialog" class="notes-close"><button aria-label="Close field notes">Close</button></form>
+      <h2>Field notes</h2>
+      <section>
+        <h3>Rules of the survey</h3>
+        <ol class="rules">
+          <li>Claim any hex that touches your land. Open land costs one point of energy. Click a hex further out and the page runs the cheapest chain of claims to it, up to 12 hexes in one transaction.</li>
+          <li>Energy refills one point per Solana slot, up to 30. This page measures a slot at <span id="slot-ms">240</span> ms right now.</li>
+          <li>Enemy land costs 2, plus 1 for every neighbouring hex its owner holds. Solid land holds; thin lines break.</li>
+          <li>A round lasts 600 slots, about <span id="round-min">2.4</span> minutes at that pace. The most land wins and is written into the Champions register on-chain.</li>
+          <li>Wiped out? Click any open hex to parachute back in.</li>
+        </ol>
+      </section>
+      <section>
+        <h3>What runs on-chain</h3>
+        <p>
+          The whole game is one Anchor program and one account per plat: the board, every seat, every energy
+          meter and the champions register. There is no game server. The page only reads the account and sends
+          signed claims; the program checks every rule.
+        </p>
+        <dl class="proof">
+          <div><dt>Program</dt><dd><a id="p-program" target="_blank" rel="noopener"></a></dd></div>
+          <div><dt>This plat</dt><dd><a id="p-arena" target="_blank" rel="noopener"></a></dd></div>
+          <div><dt>Your key</dt><dd><a id="p-key" target="_blank" rel="noopener"></a></dd></div>
+          <div><dt>Network</dt><dd id="p-net"></dd></div>
+        </dl>
+      </section>
+      <section>
+        <h3>Send your own surveyor</h3>
+        <p>The program is open. Anyone can write a bot against it; this one takes the cheapest open hex next to its land.</p>
+<pre><code>import { claimIx } from "./chain/ix.ts";
+import { claimCost, liveEnergy } from "./chain/layout.ts";
+
+const me = arena.players[seat];
+const options = [...arena.tiles.keys()]
+  .map((i) =&gt; [i, claimCost(arena.tiles, i, seat, me.tiles)])
+  .filter(([, cost]) =&gt; cost !== null &amp;&amp; cost &lt;= liveEnergy(me, slot))
+  .sort((a, b) =&gt; a[1] - b[1]);
+
+await chain.send("claim", [claimIx(arenaAddress, key.publicKey,
+  options.slice(0, 12).map(([i]) =&gt; i))], [key]);</code></pre>
+      </section>
+      <section>
+        <h3>The chain</h3>
+        <p>
+          In 1620 Edmund Gunter made a surveyor's chain 66 feet long, of 100 links. Ten square chains make an
+          acre, and a cricket pitch is still exactly one chain. Each hex on this plat is one chain across.
+        </p>
+        <p class="credit">
+          Type: IM Fell English, from the Fell Types digitised by Igino Marini; Spectral by Production Type;
+          IBM Plex Mono. Rival surveyors are named for Charles Mason, Jeremiah Dixon, George Everest,
+          Benjamin Banneker and William Lambton.
+        </p>
+      </section>
+    </dialog>
+
+    <svg width="0" height="0" style="position: absolute" aria-hidden="true">
+      <symbol id="mark" viewBox="0 0 40 40">
+        <path d="M20 3 L34.7 11.5 L34.7 28.5 L20 37 L5.3 28.5 L5.3 11.5 Z" fill="none" stroke="currentColor"
+          stroke-width="2.6" stroke-dasharray="5.2 2.2" stroke-linecap="round" />
+        <circle cx="20" cy="20" r="3.2" fill="currentColor" />
+        <path d="M20 20 V8.5 L27 11 L20 13.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" />
+      </symbol>
+    </svg>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

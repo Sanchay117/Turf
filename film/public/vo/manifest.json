@@ -1,0 +1,1294 @@
+{
+  "voice": "aura-2-draco-en",
+  "lines": {
+    "m-chain": {
+      "file": "vo/m-chain.wav",
+      "seconds": 6.586,
+      "words": [
+        {
+          "text": "In",
+          "start": 0,
+          "end": 0.32
+        },
+        {
+          "text": "1620,",
+          "start": 0.32,
+          "end": 1.52
+        },
+        {
+          "text": "Edmund",
+          "start": 1.6,
+          "end": 2.08
+        },
+        {
+          "text": "Gunter",
+          "start": 2.08,
+          "end": 2.56
+        },
+        {
+          "text": "made",
+          "start": 2.56,
+          "end": 2.96
+        },
+        {
+          "text": "a",
+          "start": 2.96,
+          "end": 3.12
+        },
+        {
+          "text": "chain",
+          "start": 3.12,
+          "end": 3.52
+        },
+        {
+          "text": "66",
+          "start": 3.52,
+          "end": 4.16
+        },
+        {
+          "text": "feet",
+          "start": 4.16,
+          "end": 4.48
+        },
+        {
+          "text": "long,",
+          "start": 4.48,
+          "end": 5.2
+        },
+        {
+          "text": "with",
+          "start": 5.28,
+          "end": 5.6
+        },
+        {
+          "text": "100",
+          "start": 5.76,
+          "end": 6.08
+        },
+        {
+          "text": "links.",
+          "start": 6.08,
+          "end": 6.48
+        }
+      ]
+    },
+    "m-acre": {
+      "file": "vo/m-acre.wav",
+      "seconds": 3.937,
+      "words": [
+        {
+          "text": "For",
+          "start": 0.08,
+          "end": 0.8
+        },
+        {
+          "text": "three",
+          "start": 0.88,
+          "end": 1.28
+        },
+        {
+          "text": "hundred",
+          "start": 1.28,
+          "end": 1.6
+        },
+        {
+          "text": "years,",
+          "start": 1.6,
+          "end": 2.32
+        },
+        {
+          "text": "land",
+          "start": 2.48,
+          "end": 2.88
+        },
+        {
+          "text": "was",
+          "start": 2.88,
+          "end": 3.12
+        },
+        {
+          "text": "measured",
+          "start": 3.12,
+          "end": 3.52
+        },
+        {
+          "text": "with",
+          "start": 3.52,
+          "end": 3.76
+        },
+        {
+          "text": "it.",
+          "start": 3.76,
+          "end": 4
+        }
+      ]
+    },
+    "m-title": {
+      "file": "vo/m-title.wav",
+      "seconds": 5.891,
+      "words": [
+        {
+          "text": "This",
+          "start": 0.08,
+          "end": 0.4
+        },
+        {
+          "text": "is",
+          "start": 0.4,
+          "end": 0.56
+        },
+        {
+          "text": "Turf.",
+          "start": 0.56,
+          "end": 1.36
+        },
+        {
+          "text": "A",
+          "start": 1.36,
+          "end": 1.6
+        },
+        {
+          "text": "real-time",
+          "start": 1.6,
+          "end": 2.08
+        },
+        {
+          "text": "land",
+          "start": 2.08,
+          "end": 2.48
+        },
+        {
+          "text": "war",
+          "start": 2.48,
+          "end": 2.8
+        },
+        {
+          "text": "on",
+          "start": 2.8,
+          "end": 3.04
+        },
+        {
+          "text": "Solana,",
+          "start": 3.04,
+          "end": 3.92
+        },
+        {
+          "text": "where",
+          "start": 4.08,
+          "end": 4.32
+        },
+        {
+          "text": "every",
+          "start": 4.32,
+          "end": 4.56
+        },
+        {
+          "text": "claim",
+          "start": 4.56,
+          "end": 4.96
+        },
+        {
+          "text": "is",
+          "start": 4.96,
+          "end": 5.2
+        },
+        {
+          "text": "a",
+          "start": 5.2,
+          "end": 5.36
+        },
+        {
+          "text": "transaction.",
+          "start": 5.36,
+          "end": 5.84
+        }
+      ]
+    },
+    "d-stake": {
+      "file": "vo/d-stake.wav",
+      "seconds": 6.611,
+      "words": [
+        {
+          "text": "No",
+          "start": 0,
+          "end": 0.4
+        },
+        {
+          "text": "wallet",
+          "start": 0.4,
+          "end": 0.72
+        },
+        {
+          "text": "to",
+          "start": 0.72,
+          "end": 0.96
+        },
+        {
+          "text": "install.",
+          "start": 0.96,
+          "end": 1.68
+        },
+        {
+          "text": "Your",
+          "start": 1.84,
+          "end": 2.08
+        },
+        {
+          "text": "browser",
+          "start": 2.08,
+          "end": 2.48
+        },
+        {
+          "text": "makes",
+          "start": 2.48,
+          "end": 2.8
+        },
+        {
+          "text": "a",
+          "start": 2.8,
+          "end": 2.96
+        },
+        {
+          "text": "throwaway",
+          "start": 2.96,
+          "end": 3.44
+        },
+        {
+          "text": "key,",
+          "start": 3.44,
+          "end": 4.16
+        },
+        {
+          "text": "and",
+          "start": 4.24,
+          "end": 4.32
+        },
+        {
+          "text": "the",
+          "start": 4.32,
+          "end": 4.48
+        },
+        {
+          "text": "land",
+          "start": 4.48,
+          "end": 4.72
+        },
+        {
+          "text": "office",
+          "start": 4.72,
+          "end": 5.04
+        },
+        {
+          "text": "pays",
+          "start": 5.04,
+          "end": 5.36
+        },
+        {
+          "text": "your",
+          "start": 5.36,
+          "end": 5.6
+        },
+        {
+          "text": "fees",
+          "start": 5.6,
+          "end": 5.92
+        },
+        {
+          "text": "on",
+          "start": 5.92,
+          "end": 6.16
+        },
+        {
+          "text": "devnet.",
+          "start": 6.16,
+          "end": 6.64
+        }
+      ]
+    },
+    "d-rivals": {
+      "file": "vo/d-rivals.wav",
+      "seconds": 7.561,
+      "words": [
+        {
+          "text": "Three",
+          "start": 0,
+          "end": 0.56
+        },
+        {
+          "text": "rival",
+          "start": 0.56,
+          "end": 1.36
+        },
+        {
+          "text": "surveyors",
+          "start": 1.36,
+          "end": 2.08
+        },
+        {
+          "text": "join",
+          "start": 2.08,
+          "end": 2.56
+        },
+        {
+          "text": "you.",
+          "start": 2.56,
+          "end": 3.12
+        },
+        {
+          "text": "They're",
+          "start": 3.36,
+          "end": 3.76
+        },
+        {
+          "text": "bots,",
+          "start": 3.76,
+          "end": 4.32
+        },
+        {
+          "text": "sending",
+          "start": 4.32,
+          "end": 4.8
+        },
+        {
+          "text": "the",
+          "start": 4.8,
+          "end": 5.04
+        },
+        {
+          "text": "same",
+          "start": 5.04,
+          "end": 5.28
+        },
+        {
+          "text": "instructions",
+          "start": 5.28,
+          "end": 5.92
+        },
+        {
+          "text": "to",
+          "start": 5.92,
+          "end": 6.24
+        },
+        {
+          "text": "the",
+          "start": 6.24,
+          "end": 6.4
+        },
+        {
+          "text": "same",
+          "start": 6.4,
+          "end": 6.64
+        },
+        {
+          "text": "public",
+          "start": 6.64,
+          "end": 7.04
+        },
+        {
+          "text": "program.",
+          "start": 7.04,
+          "end": 7.52
+        }
+      ]
+    },
+    "d-chain": {
+      "file": "vo/d-chain.wav",
+      "seconds": 8.428,
+      "words": [
+        {
+          "text": "Point",
+          "start": 0,
+          "end": 0.4
+        },
+        {
+          "text": "at",
+          "start": 0.4,
+          "end": 0.56
+        },
+        {
+          "text": "any",
+          "start": 0.56,
+          "end": 0.8
+        },
+        {
+          "text": "hex,",
+          "start": 0.8,
+          "end": 1.52
+        },
+        {
+          "text": "and",
+          "start": 1.6,
+          "end": 1.76
+        },
+        {
+          "text": "the",
+          "start": 1.76,
+          "end": 1.92
+        },
+        {
+          "text": "cheapest",
+          "start": 1.92,
+          "end": 2.32
+        },
+        {
+          "text": "chain",
+          "start": 2.32,
+          "end": 2.64
+        },
+        {
+          "text": "runs",
+          "start": 2.64,
+          "end": 3.04
+        },
+        {
+          "text": "to",
+          "start": 3.04,
+          "end": 3.2
+        },
+        {
+          "text": "it",
+          "start": 3.2,
+          "end": 3.36
+        },
+        {
+          "text": "from",
+          "start": 3.36,
+          "end": 3.52
+        },
+        {
+          "text": "your",
+          "start": 3.52,
+          "end": 3.76
+        },
+        {
+          "text": "land.",
+          "start": 3.76,
+          "end": 4.4
+        },
+        {
+          "text": "One",
+          "start": 4.56,
+          "end": 4.88
+        },
+        {
+          "text": "click",
+          "start": 4.88,
+          "end": 5.2
+        },
+        {
+          "text": "claims",
+          "start": 5.2,
+          "end": 5.68
+        },
+        {
+          "text": "up",
+          "start": 5.68,
+          "end": 6
+        },
+        {
+          "text": "to",
+          "start": 6,
+          "end": 6.08
+        },
+        {
+          "text": "twelve",
+          "start": 6.08,
+          "end": 6.4
+        },
+        {
+          "text": "hexes,",
+          "start": 6.4,
+          "end": 7.2
+        },
+        {
+          "text": "in",
+          "start": 7.2,
+          "end": 7.52
+        },
+        {
+          "text": "one",
+          "start": 7.52,
+          "end": 7.76
+        },
+        {
+          "text": "transaction.",
+          "start": 7.76,
+          "end": 8.32
+        }
+      ]
+    },
+    "d-register": {
+      "file": "vo/d-register.wav",
+      "seconds": 7.062,
+      "words": [
+        {
+          "text": "Every",
+          "start": 0,
+          "end": 0.48
+        },
+        {
+          "text": "claim",
+          "start": 0.48,
+          "end": 0.88
+        },
+        {
+          "text": "is",
+          "start": 0.88,
+          "end": 1.2
+        },
+        {
+          "text": "stamped",
+          "start": 1.2,
+          "end": 1.6
+        },
+        {
+          "text": "in",
+          "start": 1.6,
+          "end": 1.76
+        },
+        {
+          "text": "the",
+          "start": 1.76,
+          "end": 1.92
+        },
+        {
+          "text": "register,",
+          "start": 1.92,
+          "end": 2.56
+        },
+        {
+          "text": "with",
+          "start": 2.56,
+          "end": 2.96
+        },
+        {
+          "text": "its",
+          "start": 2.96,
+          "end": 3.12
+        },
+        {
+          "text": "slot,",
+          "start": 3.12,
+          "end": 3.84
+        },
+        {
+          "text": "its",
+          "start": 3.92,
+          "end": 4.16
+        },
+        {
+          "text": "time",
+          "start": 4.16,
+          "end": 4.48
+        },
+        {
+          "text": "to",
+          "start": 4.48,
+          "end": 4.64
+        },
+        {
+          "text": "confirm,",
+          "start": 4.64,
+          "end": 5.44
+        },
+        {
+          "text": "and",
+          "start": 5.44,
+          "end": 5.68
+        },
+        {
+          "text": "a",
+          "start": 5.68,
+          "end": 5.92
+        },
+        {
+          "text": "link",
+          "start": 5.92,
+          "end": 6.24
+        },
+        {
+          "text": "to",
+          "start": 6.24,
+          "end": 6.48
+        },
+        {
+          "text": "check",
+          "start": 6.48,
+          "end": 6.72
+        },
+        {
+          "text": "it.",
+          "start": 6.72,
+          "end": 6.96
+        }
+      ]
+    },
+    "d-energy": {
+      "file": "vo/d-energy.wav",
+      "seconds": 9.663,
+      "words": [
+        {
+          "text": "Energy",
+          "start": 0.32,
+          "end": 0.72
+        },
+        {
+          "text": "is",
+          "start": 0.72,
+          "end": 0.96
+        },
+        {
+          "text": "the",
+          "start": 0.96,
+          "end": 1.12
+        },
+        {
+          "text": "slot",
+          "start": 1.12,
+          "end": 1.44
+        },
+        {
+          "text": "clock:",
+          "start": 1.44,
+          "end": 2.16
+        },
+        {
+          "text": "one",
+          "start": 2.4,
+          "end": 2.72
+        },
+        {
+          "text": "point",
+          "start": 2.72,
+          "end": 3.04
+        },
+        {
+          "text": "every",
+          "start": 3.04,
+          "end": 3.44
+        },
+        {
+          "text": "slot,",
+          "start": 3.44,
+          "end": 4.24
+        },
+        {
+          "text": "about",
+          "start": 4.4,
+          "end": 4.8
+        },
+        {
+          "text": "four",
+          "start": 4.8,
+          "end": 5.12
+        },
+        {
+          "text": "a",
+          "start": 5.12,
+          "end": 5.44
+        },
+        {
+          "text": "second",
+          "start": 5.44,
+          "end": 5.76
+        },
+        {
+          "text": "on",
+          "start": 5.76,
+          "end": 6.08
+        },
+        {
+          "text": "devnet.",
+          "start": 6.08,
+          "end": 6.88
+        },
+        {
+          "text": "The",
+          "start": 7.12,
+          "end": 7.36
+        },
+        {
+          "text": "pace",
+          "start": 7.36,
+          "end": 7.68
+        },
+        {
+          "text": "of",
+          "start": 7.68,
+          "end": 7.84
+        },
+        {
+          "text": "the",
+          "start": 7.84,
+          "end": 7.92
+        },
+        {
+          "text": "game",
+          "start": 7.92,
+          "end": 8.32
+        },
+        {
+          "text": "is",
+          "start": 8.32,
+          "end": 8.56
+        },
+        {
+          "text": "the",
+          "start": 8.56,
+          "end": 8.72
+        },
+        {
+          "text": "pace",
+          "start": 8.72,
+          "end": 8.96
+        },
+        {
+          "text": "of",
+          "start": 8.96,
+          "end": 9.12
+        },
+        {
+          "text": "the",
+          "start": 9.12,
+          "end": 9.28
+        },
+        {
+          "text": "chain.",
+          "start": 9.28,
+          "end": 9.6
+        }
+      ]
+    },
+    "d-rule": {
+      "file": "vo/d-rule.wav",
+      "seconds": 6.748,
+      "words": [
+        {
+          "text": "Enemy",
+          "start": 0.16,
+          "end": 0.64
+        },
+        {
+          "text": "land",
+          "start": 0.64,
+          "end": 0.96
+        },
+        {
+          "text": "costs",
+          "start": 0.96,
+          "end": 1.44
+        },
+        {
+          "text": "more",
+          "start": 1.44,
+          "end": 2.16
+        },
+        {
+          "text": "where",
+          "start": 2.16,
+          "end": 2.48
+        },
+        {
+          "text": "it's",
+          "start": 2.48,
+          "end": 2.8
+        },
+        {
+          "text": "solid.",
+          "start": 2.8,
+          "end": 3.44
+        },
+        {
+          "text": "Solid",
+          "start": 3.76,
+          "end": 4.16
+        },
+        {
+          "text": "land",
+          "start": 4.16,
+          "end": 4.48
+        },
+        {
+          "text": "holds.",
+          "start": 4.48,
+          "end": 5.28
+        },
+        {
+          "text": "Thin",
+          "start": 5.52,
+          "end": 5.84
+        },
+        {
+          "text": "lines",
+          "start": 5.84,
+          "end": 6.24
+        },
+        {
+          "text": "break.",
+          "start": 6.24,
+          "end": 6.72
+        }
+      ]
+    },
+    "d-close": {
+      "file": "vo/d-close.wav",
+      "seconds": 7.926,
+      "words": [
+        {
+          "text": "When",
+          "start": 0,
+          "end": 0.32
+        },
+        {
+          "text": "the",
+          "start": 0.32,
+          "end": 0.4
+        },
+        {
+          "text": "round",
+          "start": 0.4,
+          "end": 0.64
+        },
+        {
+          "text": "ends,",
+          "start": 0.64,
+          "end": 1.36
+        },
+        {
+          "text": "anyone",
+          "start": 1.36,
+          "end": 1.84
+        },
+        {
+          "text": "can",
+          "start": 1.84,
+          "end": 2.16
+        },
+        {
+          "text": "turn",
+          "start": 2.16,
+          "end": 2.32
+        },
+        {
+          "text": "the",
+          "start": 2.32,
+          "end": 2.48
+        },
+        {
+          "text": "crank.",
+          "start": 2.48,
+          "end": 3.2
+        },
+        {
+          "text": "The",
+          "start": 3.44,
+          "end": 3.76
+        },
+        {
+          "text": "program",
+          "start": 3.76,
+          "end": 4.08
+        },
+        {
+          "text": "writes",
+          "start": 4.08,
+          "end": 4.56
+        },
+        {
+          "text": "the",
+          "start": 4.56,
+          "end": 4.72
+        },
+        {
+          "text": "champion",
+          "start": 4.72,
+          "end": 5.12
+        },
+        {
+          "text": "into",
+          "start": 5.12,
+          "end": 5.36
+        },
+        {
+          "text": "the",
+          "start": 5.36,
+          "end": 5.52
+        },
+        {
+          "text": "register,",
+          "start": 5.52,
+          "end": 6.32
+        },
+        {
+          "text": "and",
+          "start": 6.4,
+          "end": 6.64
+        },
+        {
+          "text": "deals",
+          "start": 6.64,
+          "end": 7.04
+        },
+        {
+          "text": "a",
+          "start": 7.04,
+          "end": 7.28
+        },
+        {
+          "text": "fresh",
+          "start": 7.28,
+          "end": 7.52
+        },
+        {
+          "text": "map.",
+          "start": 7.52,
+          "end": 7.92
+        }
+      ]
+    },
+    "b-account": {
+      "file": "vo/b-account.wav",
+      "seconds": 6.853,
+      "words": [
+        {
+          "text": "There's",
+          "start": 0,
+          "end": 0.32
+        },
+        {
+          "text": "no",
+          "start": 0.32,
+          "end": 0.56
+        },
+        {
+          "text": "game",
+          "start": 0.56,
+          "end": 0.8
+        },
+        {
+          "text": "server.",
+          "start": 0.8,
+          "end": 1.6
+        },
+        {
+          "text": "Each",
+          "start": 1.84,
+          "end": 2.08
+        },
+        {
+          "text": "plat",
+          "start": 2.08,
+          "end": 2.48
+        },
+        {
+          "text": "is",
+          "start": 2.48,
+          "end": 2.8
+        },
+        {
+          "text": "one",
+          "start": 2.8,
+          "end": 3.04
+        },
+        {
+          "text": "1,600-byte",
+          "start": 3.04,
+          "end": 4.32
+        },
+        {
+          "text": "account,",
+          "start": 4.32,
+          "end": 4.96
+        },
+        {
+          "text": "and",
+          "start": 5.2,
+          "end": 5.36
+        },
+        {
+          "text": "the",
+          "start": 5.36,
+          "end": 5.52
+        },
+        {
+          "text": "program",
+          "start": 5.52,
+          "end": 5.92
+        },
+        {
+          "text": "is",
+          "start": 5.92,
+          "end": 6.16
+        },
+        {
+          "text": "the",
+          "start": 6.16,
+          "end": 6.32
+        },
+        {
+          "text": "referee.",
+          "start": 6.32,
+          "end": 6.8
+        }
+      ]
+    },
+    "b-numbers": {
+      "file": "vo/b-numbers.wav",
+      "seconds": 8.315,
+      "words": [
+        {
+          "text": "That",
+          "start": 0,
+          "end": 0.48
+        },
+        {
+          "text": "round",
+          "start": 0.48,
+          "end": 1.04
+        },
+        {
+          "text": "took",
+          "start": 1.04,
+          "end": 1.44
+        },
+        {
+          "text": "94",
+          "start": 1.44,
+          "end": 2.08
+        },
+        {
+          "text": "claims",
+          "start": 2.08,
+          "end": 2.56
+        },
+        {
+          "text": "from",
+          "start": 2.56,
+          "end": 2.88
+        },
+        {
+          "text": "4",
+          "start": 2.88,
+          "end": 3.2
+        },
+        {
+          "text": "players.",
+          "start": 3.2,
+          "end": 4
+        },
+        {
+          "text": "On",
+          "start": 4.24,
+          "end": 4.48
+        },
+        {
+          "text": "devnet,",
+          "start": 4.48,
+          "end": 5.28
+        },
+        {
+          "text": "they",
+          "start": 5.28,
+          "end": 5.44
+        },
+        {
+          "text": "confirmed",
+          "start": 5.44,
+          "end": 5.92
+        },
+        {
+          "text": "in",
+          "start": 5.92,
+          "end": 6.16
+        },
+        {
+          "text": "0.9",
+          "start": 6.16,
+          "end": 7.12
+        },
+        {
+          "text": "seconds",
+          "start": 7.12,
+          "end": 7.52
+        },
+        {
+          "text": "on",
+          "start": 7.52,
+          "end": 7.84
+        },
+        {
+          "text": "average.",
+          "start": 7.84,
+          "end": 8.24
+        }
+      ]
+    },
+    "b-open": {
+      "file": "vo/b-open.wav",
+      "seconds": 4.697,
+      "words": [
+        {
+          "text": "And",
+          "start": 0,
+          "end": 0.4
+        },
+        {
+          "text": "because",
+          "start": 0.4,
+          "end": 0.72
+        },
+        {
+          "text": "the",
+          "start": 0.72,
+          "end": 0.96
+        },
+        {
+          "text": "rules",
+          "start": 0.96,
+          "end": 1.2
+        },
+        {
+          "text": "live",
+          "start": 1.2,
+          "end": 1.52
+        },
+        {
+          "text": "on",
+          "start": 1.52,
+          "end": 1.68
+        },
+        {
+          "text": "chain,",
+          "start": 1.68,
+          "end": 2.4
+        },
+        {
+          "text": "anyone",
+          "start": 2.4,
+          "end": 2.88
+        },
+        {
+          "text": "can",
+          "start": 2.88,
+          "end": 3.12
+        },
+        {
+          "text": "write",
+          "start": 3.12,
+          "end": 3.36
+        },
+        {
+          "text": "a",
+          "start": 3.36,
+          "end": 3.52
+        },
+        {
+          "text": "surveyor",
+          "start": 3.52,
+          "end": 4
+        },
+        {
+          "text": "of",
+          "start": 4,
+          "end": 4.24
+        },
+        {
+          "text": "their",
+          "start": 4.24,
+          "end": 4.4
+        },
+        {
+          "text": "own.",
+          "start": 4.4,
+          "end": 4.64
+        }
+      ]
+    },
+    "e-close": {
+      "file": "vo/e-close.wav",
+      "seconds": 8.235,
+      "words": [
+        {
+          "text": "Land",
+          "start": 0,
+          "end": 0.72
+        },
+        {
+          "text": "has",
+          "start": 0.72,
+          "end": 0.96
+        },
+        {
+          "text": "been",
+          "start": 0.96,
+          "end": 1.2
+        },
+        {
+          "text": "measured",
+          "start": 1.2,
+          "end": 1.52
+        },
+        {
+          "text": "in",
+          "start": 1.52,
+          "end": 1.76
+        },
+        {
+          "text": "chains",
+          "start": 1.76,
+          "end": 2.24
+        },
+        {
+          "text": "since",
+          "start": 2.24,
+          "end": 2.64
+        },
+        {
+          "text": "1620.",
+          "start": 2.64,
+          "end": 4
+        },
+        {
+          "text": "Now",
+          "start": 4.4,
+          "end": 4.88
+        },
+        {
+          "text": "it's",
+          "start": 4.88,
+          "end": 5.28
+        },
+        {
+          "text": "measured",
+          "start": 5.28,
+          "end": 5.6
+        },
+        {
+          "text": "in",
+          "start": 5.6,
+          "end": 5.92
+        },
+        {
+          "text": "slots.",
+          "start": 5.92,
+          "end": 6.8
+        },
+        {
+          "text": "Stake",
+          "start": 7.12,
+          "end": 7.6
+        },
+        {
+          "text": "your",
+          "start": 7.6,
+          "end": 7.84
+        },
+        {
+          "text": "claim.",
+          "start": 7.84,
+          "end": 8.16
+        }
+      ]
+    }
+  }
+}

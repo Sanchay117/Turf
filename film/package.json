@@ -1,0 +1,29 @@
+{
+  "name": "turf-film",
+  "private": true,
+  "description": "The Turf demo film: motion graphics on Gunter's chain, then one real round on Solana devnet.",
+  "type": "module",
+  "scripts": {
+    "studio": "remotion studio",
+    "sfx": "node scripts/sfx.ts",
+    "voice": "node --env-file=../../Appwrite/.env scripts/voice.ts",
+    "capture": "node scripts/capture.ts",
+    "render": "nice -n 10 remotion render Turf out/turf-raw.mp4 --crf=18 --concurrency=4",
+    "master": "node scripts/master.ts",
+    "thumbnails": "nice -n 10 remotion still Thumbnail out/turf-thumbnail-1920.png && nice -n 10 remotion still Thumbnail out/turf-thumbnail-1280.png --scale=0.6667",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@remotion/bundler": "4.0.537",
+    "@remotion/cli": "4.0.537",
+    "@remotion/renderer": "4.0.537",
+    "remotion": "4.0.537",
+    "react": "19.3.1",
+    "react-dom": "19.3.1"
+  },
+  "devDependencies": {
+    "@types/react": "^19.0.0",
+    "playwright-core": "1.64.1",
+    "typescript": "5.9.3"
+  }
+}
