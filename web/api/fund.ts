@@ -70,11 +70,19 @@ interface Treasury {
   address: string;
 }
 
+/** Why the treasury key could not be read, for the error message. */
+function treasuryProblem(): string {
+  const raw = process.env.TREASURY_SECRET?.trim();
+  if (!raw) return "gas station not configured: TREASURY_SECRET is not set for this deployment";
+  return `gas station not configured: TREASURY_SECRET is set (${raw.length} characters) but is not a 64-byte keypair; paste the JSON array from keys/treasury.json`;
+}
+
 function treasury(): Treasury | null {
-  const raw = process.env.TREASURY_SECRET;
+  const raw = process.env.TREASURY_SECRET?.trim().replace(/^['"]|['"]$/g, "");
   if (!raw) return null;
   try {
-    const secret = Uint8Array.from(JSON.parse(raw) as number[]);
+    // Either the JSON array from `solana-keygen` or a base58 secret key.
+    const secret = raw.startsWith("[") ? Uint8Array.from(JSON.parse(raw) as number[]) : b58decode(raw, 64);
     if (secret.length !== 64) return null;
     // PKCS#8 wrapper for a raw Ed25519 seed (the first 32 bytes of a Solana secret key).
     const der = Buffer.concat([Buffer.from("302e020100300506032b657004220420", "hex"), Buffer.from(secret.subarray(0, 32))]);
@@ -174,7 +182,7 @@ function message(e: unknown): string {
 
 export async function GET(): Promise<Response> {
   const t = treasury();
-  if (!t) return json({ ok: false, error: "gas station not configured" }, 503);
+  if (!t) return json({ ok: false, error: treasuryProblem() }, 503);
   try {
     const r = await rpc<{ value: number }>("getBalance", [t.address, { commitment: "confirmed" }]);
     return json({ ok: true, treasury: t.address, sol: r.value / SOL });
@@ -193,7 +201,7 @@ export async function POST(request: Request): Promise<Response> {
 
 async function topUp(request: Request): Promise<Response> {
   const t = treasury();
-  if (!t) return json({ ok: false, error: "gas station not configured" }, 503);
+  if (!t) return json({ ok: false, error: treasuryProblem() }, 503);
 
   const ip = (request.headers.get("x-forwarded-for") ?? "local").split(",")[0].trim();
   const now = Date.now();
